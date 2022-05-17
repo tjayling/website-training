@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://use.typekit.net/nif7jgh.css" />
+    <meta name="viewport" content="width=device-widthm initial-scale=1.0">
+    <title>Welcome!</title>
+  </head>
+  <header>
+    <h1>Welcome to the to-do app!</h1>
+  </header>
+  <body>
+    <section>
+      <div class="todo">
+        <h2>To do:</h2>
+        <article>
+          <ul id="todo-list"></ul>
+        </article>
+      </div>
+      <div class="add">
+        <article>
+          <form>
+            <input
+              type="text"
+              class="form-control"
+              id="todo-title"
+              placeholder="Add new todo..."
+              required
+            />
+            <button onclick="newTodo()" class="btn addBtn">Add</button>
+          </form>
+        </article>
+      </div>
+    </section>
+    <script>
+      //   var json_data = [
+      //     {
+      //       title: "Get some bananas",
+      //       completed: false,
+      //     },
+      //     {
+      //       title: "Get a new plant",
+      //       completed: false,
+      //     },
+      //     {
+      //       title: "Get a job",
+      //       completed: false,
+      //     },
+      //   ];
+      var json_data = JSON.parse(localStorage.getItem("json_data"));
+      var myList = document.getElementById("todo-list");
+      if (json_data) {
+        json_data.forEach((element) => {
+          if (element) {
+            newTodo(element.title, element.id);
+          }
+        });
+      }
+
+      addCloseListeners();
+
+      function createDeleteLink() {
+        var deleteLink = document.createElement("a");
+        deleteLink.href = "#";
+        deleteLink.className = "btn delete";
+        deleteLink.appendChild(document.createTextNode("Delete"));
+        return deleteLink;
+      }
+
+      function addCloseListeners() {
+        var closeButtons = document.getElementsByClassName("delete");
+        for (var i = 0; i < closeButtons.length; i++) {
+          closeButtons[i].addEventListener("click", deleteTodo, false);
+        }
+      }
+
+      function newTodo(todoTitle, todoID) {
+        if (!todoID && !todoTitle) {
+          var todoTitle = document.getElementById("todo-title").value;
+          var todoID = storeTodoLocal(todoTitle);
+        }
+        //Check that input is not blank
+        if (todoTitle != "" && !/^\s*$/.test(todoTitle)) {
+          var listItem = document.createElement("li");
+          listItem.dataset.id = todoID;
+          listItem.appendChild(document.createTextNode(todoTitle));
+          //Create a delete link
+          var deleteLink = document.createElement("a");
+          deleteLink.href = "#";
+          deleteLink.className = "btn delete";
+          deleteLink.appendChild(document.createTextNode("Delete"));
+          //Add delete link to list item
+          listItem.appendChild(deleteLink);
+
+          myList.appendChild(listItem);
+          addCloseListeners();
+        }
+      }
+
+      function deleteTodo() {
+        var li = this.parentElement;
+        myList.removeChild(li);
+        var json_temp = JSON.parse(localStorage.getItem("json_data"));
+        console.log(li.dataset.id);
+        delete json_temp[li.dataset.id];
+        localStorage.setItem("json_data", JSON.stringify(json_temp));
+      }
+
+      function storeTodoLocal(todoTitle) {
+        var json_temp = JSON.parse(localStorage.getItem("json_data"));
+        if (!json_temp) {
+          json_temp = [];
+        }
+        var todoID = json_temp.length;
+
+        json_temp.push({
+          id: todoID,
+          title: todoTitle,
+          completed: false,
+        });
+
+        console.log(json_temp);
+
+        localStorage.setItem("json_data", JSON.stringify(json_temp));
+
+        return todoID;
+      }
+    </script>
+  </body>
+</html>

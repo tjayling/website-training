@@ -1,0 +1,50 @@
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.btn {
+  background-color: #f86c6c;
+  color: white;
+  /* display: block; */
+  display: inline-block;
+  position: relative;
+  margin: 5px;
+  padding: 2px;
+  padding-top: 0px;
+  border-radius: 5px;
+  text-decoration: none;
+  outline-style: solid;
+  outline-width: 2px;
+  transition: all 0.1s ease-in-out;
+}
+.btn:hover {
+  background-color: #ff4444;
+  transform: scale(0.95);
+}
+.btn:active {
+  transform: scale(0.9);
+}
+
+input {
+  border-radius: 5px;
+  padding: 2px;
+}
+
+button.btn {
+  background-color: #408bbd;
+  border-style: none;
+  padding: 5px;
+}
+button.btn:hover {
+  background-color: rgb(57, 97, 124);
+}
+.todo {
+  position: absolute;
+  left: 40px;
+}
+.add {
+  position: absolute;
+  right: 40px;
+}
